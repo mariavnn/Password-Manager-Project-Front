@@ -3,7 +3,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 
 
-export default function ContainerInfo({onClick}) {
+export default function ContainerInfo({onClick, site}) {
   const [favorite, setFavorite ] = useState(false);
 
   const handleFavorite = () =>{
@@ -18,7 +18,7 @@ export default function ContainerInfo({onClick}) {
           src="/src/assets/world-wide-web.png"
           className="w-5 h-5 mr-2 opacity-70"
         />
-        <p className="text-gray-300">github.com</p>
+        <p className="text-gray-300">{site}</p>
       </div>
 
       <div className="flex gap-2 items-center">

@@ -6,29 +6,40 @@ import MenuButton from '../components/MenuButton';
 import SettingsView from '../components/SettingsView';
 
 export default function HomePage() {
-    const [isLogIn, setIsLogIn] = useState(false);
-    const [showModalLogin, setShowModalLogin] = useState(true);
+    const [showModalLogin, setShowModalLogin] = useState(false);
     const [showModalRegister, setShowModalRegister] = useState(false);
     const [activeView, setActiveView] = useState('passwords');
   
 
     useEffect(() => {
-        if (!isLogIn) {
-            setShowModalLogin(true);
+        const login = localStorage.getItem("login");
+        const loginTimestamp = localStorage.getItem("loginTimestamp");
+
+        if (login && loginTimestamp) {
+            const now = Date.now();
+            const elapsedTime = now - parseInt(loginTimestamp, 10);
+
+            if (elapsedTime > 30 * 60 * 1000) {
+                localStorage.removeItem("login");
+                localStorage.removeItem("token");
+                localStorage.removeItem("loginTimestamp");
+                setShowModalLogin(true);
+            } else {
+                setShowModalLogin(false);
+            }
         } else {
-            setShowModalLogin(false);
+            setShowModalLogin(true);
         }
-    }, [isLogIn]);
+    }, []);
+
 
     const handleLogin = () => {
-        setIsLogIn(true);
         setShowModalLogin(false);
     };
 
     const handleRegister = () =>{
         setShowModalRegister(true);
         setShowModalLogin(false);
-        setIsLogIn(false);
     }
 
     const closeRegister = () => {

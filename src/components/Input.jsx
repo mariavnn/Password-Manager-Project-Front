@@ -1,38 +1,52 @@
-import React from "react";
-import { FaUser } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+import { MdEmail } from 'react-icons/md';
+import { FaUser } from 'react-icons/fa';
 
-
-
-export default function Input({ label, type = 'text', icon, bgColor = 'white', disabled}) {
+export default function Input({
+  label,
+  type = 'text',
+  icon,
+  bgColor = 'white',
+  disabled,
+  name,
+  value,
+  onChange,
+  onBlur,
+  placeholder = '',
+}) {
   const typeIcon = (icon) => {
     switch (icon) {
       case 'email':
-        return <MdEmail className="text-zinc-500"/>
+        return <MdEmail className="text-zinc-500" />;
       case 'user':
-        return <FaUser className="text-zinc-500" />
+        return <FaUser className="text-zinc-500" />;
       default:
-        return ''; // No icon
+        return null;
     }
   };
 
   const backgroundClass = bgColor === 'gray' ? 'bg-zinc-700/70' : 'bg-white';
+  const textColorClass = bgColor === 'gray' ? 'text-white' : 'text-gray-600';
   const iconSrc = typeIcon(icon);
 
   return (
     <div>
-      <label htmlFor="uname" className="block text-gray-300 mb-1 font-medium">
+      <label htmlFor={name} className="block text-gray-300 mb-1 font-medium">
         {label}
       </label>
-      <div className={`flex items-center ${backgroundClass} rounded-xl p-2 focus-within:ring-2 focus-within:ring-green-200`}>
+      <div
+        className={`flex items-center ${backgroundClass} rounded-xl p-2 focus-within:ring-2 focus-within:ring-green-200`}
+      >
         <input
           type={type}
-          name="uname"
-          id="uname"
-          placeholder="Enter Username"
+          name={name}
+          id={name}
+          placeholder={placeholder || `Enter ${label}`}
           required
-          className="outline-none flex-1 bg-transparent text-gray-800 placeholder-gray-400"
+          className={`outline-none flex-1 bg-transparent ${textColorClass} placeholder-gray-400`}
           disabled={disabled}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
         />
         {iconSrc}
       </div>
