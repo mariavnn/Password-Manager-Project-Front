@@ -5,6 +5,7 @@ import ConfirmButton from "./ConfirmButton";
 import CancelButton from "./CancelButton";
 import usePasswordStore from "../store/PasswordStore";
 import { getPassword } from "../api/passwordApi";
+import SessionExpired from "../modals/SessionExpired";
 
 export default function ConsultPassword({closeModal}) {
 
@@ -14,18 +15,42 @@ export default function ConsultPassword({closeModal}) {
   const [site, setSite] = useState("");
 
   useEffect(() => {
-    if (!selectedPassword) return;
-    console.log('peticion ', selectedPassword.siteName)
-    getPassword(selectedPassword.siteName)
-      .then((data) => {
+  if (!selectedPassword || !selectedPassword.siteName) return;
+
+  const fetchPassword = async () => {
+      try {
+        console.log("Petición al backend con:", selectedPassword.siteName);
+        const data = await getPassword(selectedPassword.siteName);
+        console.log('DATA DE PASSWORD  ', data);
+        if (!data || Object.keys(data).length === 0) {
+          console.warn("No se recibió información del backend.");
+          setPassword("");
+          setUsername("");
+          setSite(selectedPassword.siteName || "");
+          return;
+        }
+
         setPassword(data.password || "");
         setUsername(data.username || "");
-        setSite(data.siteName || "");
-      })
-      .catch((error) => {
+        setSite(data.siteName || selectedPassword.siteName);
+      } catch (error) {
         console.error("Error al obtener la contraseña:", error);
-      });
+      }
+    };
+
+    fetchPassword();
   }, [selectedPassword]);
+
+
+  useEffect(() => {
+    if (!selectedPassword) return;
+
+    const timeoutId = setTimeout(() => {
+      <SessionExpired label={'Your Access Key has expired'} onClick={closeModal}/>
+    }, 10 * 60 * 1000); 
+
+    return () => clearTimeout(timeoutId);
+  }, [selectedPassword, closeModal]);
 
   if (!selectedPassword) {
     return null;
@@ -65,6 +90,7 @@ export default function ConsultPassword({closeModal}) {
             label={"Site"} 
             bgColor="gray" 
             value={site}
+            disabled={true}
           />
         </div>
 

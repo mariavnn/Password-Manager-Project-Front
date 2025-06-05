@@ -1,52 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PasswordView from '../components/PasswordView'
 import LoginModal from '../modals/Login';
 import RegisterModal from '../modals/Register';
 import MenuButton from '../components/MenuButton';
 import SettingsView from '../components/SettingsView';
+import ConfirmButton from '../components/ConfirmButton';
+import useAuthStore from '../store/LoginStore';
 
 export default function HomePage() {
-    const [showModalLogin, setShowModalLogin] = useState(false);
-    const [showModalRegister, setShowModalRegister] = useState(false);
     const [activeView, setActiveView] = useState('passwords');
-  
+    const { logOut, openLoginModal } = useAuthStore();
 
-    useEffect(() => {
-        const login = localStorage.getItem("login");
-        const loginTimestamp = localStorage.getItem("loginTimestamp");
-
-        if (login && loginTimestamp) {
-            const now = Date.now();
-            const elapsedTime = now - parseInt(loginTimestamp, 10);
-
-            if (elapsedTime > 30 * 60 * 1000) {
-                localStorage.removeItem("login");
-                localStorage.removeItem("token");
-                localStorage.removeItem("loginTimestamp");
-                setShowModalLogin(true);
-            } else {
-                setShowModalLogin(false);
-            }
-        } else {
-            setShowModalLogin(true);
-        }
-    }, []);
-
-
-    const handleLogin = () => {
-        setShowModalLogin(false);
-    };
-
-    const handleRegister = () =>{
-        setShowModalRegister(true);
-        setShowModalLogin(false);
+    const handleLogOut = () =>{
+        logOut();
+        openLoginModal();
     }
-
-    const closeRegister = () => {
-        setShowModalRegister(false);
-        setShowModalLogin(true);
-    }
-
 
     return (
         <div className='bg-zinc-900 h-screen overflow-hidden'>
@@ -62,31 +30,18 @@ export default function HomePage() {
                         active={activeView === 'passwords'}
                         onClick={() => setActiveView('passwords')}
                     />
-                    {/* <MenuButton
-                        label="Settings"
-                        active={activeView === 'settings'}
-                        onClick={() => setActiveView('settings')}
-                    /> */}
+                    <button
+                        className='text-white font-bold py-2 px-1 border-2 rounded-2xl border-emerald-400 hover:scale-105 hover:bg-emerald-400'
+                        onClick={handleLogOut}
+                    >
+                        <p>Log Out</p>
+                    </button>
                 </div>
                 <div className="flex-1 h-full mt-5">
                     {activeView === 'passwords' && <PasswordView />}
-                    {/* {activeView === 'settings' && <SettingsView />} */}
                 </div>
             </div>
-
-            {showModalLogin && (
-               <LoginModal
-                    handleLogin={handleLogin}
-                    handleRegister={handleRegister}
-               />
-            )}
-
-            {showModalRegister && (
-                <RegisterModal
-                    closeRegister={closeRegister}
-                />
-            )}
-
+           
         </div>
         
     )

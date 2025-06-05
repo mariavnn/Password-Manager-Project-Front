@@ -42,7 +42,7 @@ export default function Input({
           id={name}
           placeholder={placeholder || `Enter ${label}`}
           required
-          className={`outline-none flex-1 bg-transparent ${textColorClass} placeholder-gray-400`}
+          className={`outline-none flex-1 bg-transparent ${textColorClass} placeholder-gray-400 focus:outline-none focus:ring-0 focus:shadow-none`}
           disabled={disabled}
           value={value}
           onChange={onChange}

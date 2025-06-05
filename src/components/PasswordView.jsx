@@ -4,36 +4,23 @@ import AddModal from "../modals/AddModal";
 import AccessKeyModal from "../modals/AccessKeyModal";
 import EditPassword from "./ConsultPassword";
 import ConsultPassword from "./ConsultPassword";
-import { getPasswords } from "../api/passwordApi";
 import usePasswordStore from "../store/PasswordStore";
+import SessionExpired from "../modals/SessionExpired";
+import useAuthStore from "../store/LoginStore";
 
 export default function PasswordView() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAccessKeyModal, setShowAccessKeyModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
-  const [passwords, setPasswords] = useState([]);
-  //const [favorites, setFavorite] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const { setSelectedPassword } = usePasswordStore();
-
-  const fetchPasswords = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getPasswords();
-      console.log("DATA", data);
-      setPasswords(data);
-    } catch (err) {
-      setError("Error cargando contraseñas" + err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { setSelectedPassword, passwords, loading, error, fetchPasswords } = usePasswordStore();
+  const { token, sessionChecked, isLoggedIn } = useAuthStore();
 
   useEffect(() => {
-    fetchPasswords();
-  }, []);
+    if (isLoggedIn && token) {
+      fetchPasswords();
+    }
+  }, [sessionChecked, isLoggedIn, token, fetchPasswords]);
+
 
   const handleAddModal = () => setShowAddModal(true);
 
@@ -87,32 +74,44 @@ export default function PasswordView() {
           <>
             <div className="mb-5">
               <h2 className="font-bold text-zinc-400 mb-2 mr-2">Favorite</h2>
-              {/* {passwords
-                .filter((pwd) => pwd.favorite)
-                .map((pwd) => (
-                  <ContainerInfo
-                    key={pwd.id}
-                    site={pwd.siteName}
-                    onClick={() => handleShowAccessKeyModal(pwd)}
-                  />
-                ))} */}
+              {passwords.filter(pwd => pwd.favorito === true).length === 0 ? (
+                <p className="text-zinc-500 text-center mt-10">No hay contenido disponible.</p>
+              ) : (
+                passwords
+                  .filter(pwd => pwd.favorito === true)
+                  .map(pwd => (
+                    <ContainerInfo 
+                      key={pwd.id} 
+                      site={pwd.siteName} 
+                      password={pwd} 
+                      onClick={() => handleShowAccessKeyModal(pwd)}
+                    />
+                  ))
+              )}
             </div>
-
             <div className="mb-5">
               <h2 className="font-bold text-zinc-400 mb-2 mr-2">All</h2>
-              {passwords.map((pwd) => (
-                <ContainerInfo
-                  key={pwd.siteName}
-                  site={pwd.siteName}
-                  onClick={() => handleShowAccessKeyModal(pwd)}
-                />
-              ))}
+              {passwords.filter(pwd => !pwd.favorito).length === 0 ? (
+                <p className="text-zinc-500 text-center mt-10">No hay contenido disponible.</p>
+              ) : (passwords
+                    .filter(pwd => pwd.favorito === false)
+                    .map((pwd) => (
+                      <ContainerInfo
+                        key={pwd.id}
+                        site={pwd.siteName}
+                        password={pwd}
+                        onClick={() => handleShowAccessKeyModal(pwd)}
+                      />
+                    )))}
             </div>
           </>
         )}
       </div>
 
       {showAddModal && <AddModal closeModal={handleHideModal} />}
+      {/* {showAddModal && 
+        <SessionExpired label={"Your Session has expired"} />
+      } */}
 
       {showAccessKeyModal && (
         <AccessKeyModal

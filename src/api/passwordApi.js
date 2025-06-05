@@ -28,6 +28,7 @@ export const getPasswords = async () => {
 
 export const getPassword = async (site) => {
   const response = await axios.get(`${API_URL}/passwords/${site}`, authHeaders());
+  console.log('Peticion al backend de password ', response.data);
   return response.data;
 };
 
@@ -36,4 +37,18 @@ export const validateAccessKey = async (accessKey) => {
     accessKey,
   }, authHeaders());
   return response.data; // devuelve { valid: true/false }
+};
+
+export const markPasswordAsFavorite = async (id) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}/passwords/${id}/favorite`,
+      {}, 
+      authHeaders()
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error marcando como favorita:', error);
+    throw error;
+  }
 };

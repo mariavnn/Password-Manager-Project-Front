@@ -25,7 +25,7 @@ export default function AddModal({ closeModal }) {
     const handleSubmit = async (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
         try {
             await savePassword(values);
-            setStatus({ success: 'Clave válida. Acceso concedido.' });
+            setStatus({ success: 'La contraseña se agrego con exito' });
             setShowSuccess(true);       
             setTimeout(() => {
                 setStatus({ success: null });  
@@ -102,7 +102,7 @@ export default function AddModal({ closeModal }) {
                         )}
                     </div>
                     
-                    <div className='h-4 mb-2'>
+                    <div className='h-4'>
                         {errors.general && (
                             <p className="text-red-400 text-sm">{errors.general}</p>
                         )}
@@ -111,7 +111,7 @@ export default function AddModal({ closeModal }) {
                         )}
                     </div>
 
-                    <div className=" flex justify-between px-5 mt-8">
+                    <div className=" flex justify-between px-5 mt-5">
                         <div className="w-2/5">
                             <CancelButton label="Cancel" onClick={closeModal} />
                         </div>
