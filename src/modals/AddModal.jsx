@@ -30,9 +30,10 @@ export default function AddModal({ closeModal }) {
             setTimeout(() => {
                 setStatus({ success: null });  
                 resetForm();                   
-                setShowSuccess(false);                         
+                setShowSuccess(false);  
+                closeModal();                       
             }, 2000);
-            closeModal();
+           
         } catch (error) {
             const errorMessage =
                 error.response?.data?.error || 'Error al guardar la contraseña.';
