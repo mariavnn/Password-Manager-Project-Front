@@ -32,7 +32,7 @@ export default function AddModal({ closeModal }) {
                 resetForm();                   
                 setShowSuccess(false);  
                 closeModal();                       
-            }, 2000);
+            }, 2500);
            
         } catch (error) {
             const errorMessage =
