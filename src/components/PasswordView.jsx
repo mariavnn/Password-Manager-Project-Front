@@ -82,7 +82,6 @@ export default function PasswordView() {
                   .map(pwd => (
                     <ContainerInfo 
                       key={pwd.id} 
-                      site={pwd.siteName} 
                       password={pwd} 
                       onClick={() => handleShowAccessKeyModal(pwd)}
                     />
@@ -98,7 +97,6 @@ export default function PasswordView() {
                     .map((pwd) => (
                       <ContainerInfo
                         key={pwd.id}
-                        site={pwd.siteName}
                         password={pwd}
                         onClick={() => handleShowAccessKeyModal(pwd)}
                       />
@@ -109,9 +107,6 @@ export default function PasswordView() {
       </div>
 
       {showAddModal && <AddModal closeModal={handleHideModal} />}
-      {/* {showAddModal && 
-        <SessionExpired label={"Your Session has expired"} />
-      } */}
 
       {showAccessKeyModal && (
         <AccessKeyModal

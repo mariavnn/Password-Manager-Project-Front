@@ -15,11 +15,12 @@ export default function ConsultPassword({closeModal}) {
   const [site, setSite] = useState("");
 
   useEffect(() => {
-  if (!selectedPassword || !selectedPassword.siteName) return;
+  if (!selectedPassword || !selectedPassword.site_name) return;
 
   const fetchPassword = async () => {
       try {
-        const data = await getPassword(selectedPassword.siteName);
+        console.log('SELECTED PASSWORD', selectedPassword);
+        const data = await getPassword(selectedPassword.site_name);
         if (!data || Object.keys(data).length === 0) {
           console.warn("No se recibió información del backend.");
           setPassword("");
@@ -30,7 +31,7 @@ export default function ConsultPassword({closeModal}) {
 
         setPassword(data.password || "");
         setUsername(data.username || "");
-        setSite(data.siteName || selectedPassword.siteName);
+        setSite(data.siteName || selectedPassword.site_name);
       } catch (error) {
         console.error("Error al obtener la contraseña:", error);
       }
@@ -59,7 +60,7 @@ export default function ConsultPassword({closeModal}) {
     <div className="fixed inset-0 backdrop-blur-sm bg-opacity-80 flex items-center justify-center z-50">
       <div class="w-[40%] h-[50%] bg-zinc-900 border-white border-1 rounded-2xl flex justify-between py-3">
         <div className="w-[45%] justify-around flex flex-col mt-2 mb-2 ml-8">
-          <h2 className="text-white text-2xl font-bold mb-2">Github.com</h2>
+          <h2 className="text-white text-2xl font-bold mb-2">{site}</h2>
 
           <div className="flex flex-col gap-4">
             <Input 

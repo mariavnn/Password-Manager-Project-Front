@@ -6,7 +6,7 @@ import { markPasswordAsFavorite } from "../api/passwordApi";
 import usePasswordStore from "../store/PasswordStore";
 
 
-export default function ContainerInfo({onClick, site, password}) {
+export default function ContainerInfo({onClick,  password}) {
   const { fetchPasswords } = usePasswordStore();
 
    const handleFavorite = async () => {
@@ -24,7 +24,7 @@ export default function ContainerInfo({onClick, site, password}) {
     >
       <div className="flex gap-3 items-center w-full" onClick={onClick}>
         <TbWorld  className="text-zinc-500 w-5 h-5"/>
-        <p className="text-gray-300">{site}</p>
+        <p className="text-gray-300">{password.site_name}</p>
       </div>
 
       <div className="flex gap-2 items-center">
