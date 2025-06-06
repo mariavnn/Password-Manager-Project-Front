@@ -36,8 +36,7 @@ export default function RegisterModal({ closeRegister }) {
             await register(data);
             closeRegister();
         } catch (error) {
-            const errorMessage = error.response || 'Error al registrar';
-            setErrors({ general: errorMessage });
+            setErrors({ general: error.message });
         } finally {
         setSubmitting(false);
         }
