@@ -26,7 +26,6 @@ export default function LoginModal({ handleLogin, handleRegister }) {
       logIn(res.token);
       if (handleLogin) handleLogin();
     } catch (error) {
-      console.log("Errorr ", error);
       const errorMessage = error.response?.data?.error || "Error al entrar";
       setErrors({ general: errorMessage });
     } finally {

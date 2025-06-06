@@ -11,7 +11,6 @@ export default function ContainerInfo({onClick, site, password}) {
 
    const handleFavorite = async () => {
     try {
-      console.log('Passwords id ', password.id);
       await markPasswordAsFavorite(password.id);
       fetchPasswords();
     } catch (err) {

@@ -33,12 +33,10 @@ export default function RegisterModal({ closeRegister }) {
     const handleSubmit = async (values, { setSubmitting, setErrors }) => {
         try {
             const data = prepareData(values);
-            console.log('DATA ', data);
-            const response = await register(data);
-            console.log('RESPONSE ', response);
+            await register(data);
             closeRegister();
         } catch (error) {
-            const errorMessage = error.response?.data?.error || 'Error al registrar';
+            const errorMessage = error.response || 'Error al registrar';
             setErrors({ general: errorMessage });
         } finally {
         setSubmitting(false);

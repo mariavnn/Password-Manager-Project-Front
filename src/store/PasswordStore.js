@@ -13,7 +13,6 @@ const usePasswordStore = create((set) => ({
     set({ loading: true, error: null });
     try {
       const data = await getPasswords();
-      console.log('DATA  ', data);
       set({ passwords: data || [] });
     } catch (err) {
       set({ error: "Error cargando contraseñas: " + err });

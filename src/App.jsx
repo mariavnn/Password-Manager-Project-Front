@@ -29,7 +29,6 @@ function App() {
 
   const handleLoginSuccess = () => {
     closeLoginModal(); 
-    console.log("Login exitoso");
   };
 
   const handleRegister = () => {
