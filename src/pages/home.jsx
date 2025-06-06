@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { MdSecurity } from "react-icons/md";
 import PasswordView from '../components/PasswordView'
 import LoginModal from '../modals/Login';
 import RegisterModal from '../modals/Register';
@@ -19,7 +20,8 @@ export default function HomePage() {
     return (
         <div className='bg-zinc-900 h-screen overflow-hidden'>
             <div className="bg-emerald-400 flex gap-6 py-3 px-8 items-center">
-                <img src="/src/assets/logo.png"/>
+                <MdSecurity className='text-white h-10 w-10'/>
+
                 <h2 className="text-white font-bold text-2xl">PassSafe</h2>
             </div>
 
