@@ -16,7 +16,6 @@ const authHeaders = () => {
 
 
 export const savePassword = async ( body ) => {
-    console.log('body peticion '. body);
   const response = await axios.post(`${API_URL}/passwords/create`, body, authHeaders());
   return response.data;
 };
@@ -28,7 +27,6 @@ export const getPasswords = async () => {
 
 export const getPassword = async (site) => {
   const response = await axios.get(`${API_URL}/passwords/${site}`, authHeaders());
-  console.log('Peticion al backend de password ', response.data);
   return response.data;
 };
 
