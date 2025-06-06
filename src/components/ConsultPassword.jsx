@@ -75,6 +75,7 @@ export default function ConsultPassword({closeModal}) {
               value={password} 
               bgColor="gray"  
               disabled={true}
+              copy={true}
             />
           </div>
           
