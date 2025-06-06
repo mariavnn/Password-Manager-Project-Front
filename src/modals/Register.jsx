@@ -21,10 +21,21 @@ export default function RegisterModal({ closeRegister }) {
         .oneOf([Yup.ref('password'), null], 'Las contraseñas no coinciden')
         .required('Confirma tu contraseña'),
     });
+
+    const prepareData = (data) =>{
+      return {
+        username: data.username,
+        email: data.email,
+        password: data.password
+      }
+    }
     
     const handleSubmit = async (values, { setSubmitting, setErrors }) => {
         try {
-            await register(values);
+            const data = prepareData(values);
+            console.log('DATA ', data);
+            const response = await register(data);
+            console.log('RESPONSE ', response);
             closeRegister();
         } catch (error) {
             const errorMessage = error.response?.data?.error || 'Error al registrar';

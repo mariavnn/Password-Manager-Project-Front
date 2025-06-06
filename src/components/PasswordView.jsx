@@ -32,7 +32,7 @@ export default function PasswordView() {
   const handleShowAccessKeyModal = (pwd) => {
     setShowAccessKeyModal(true);
     setSelectedPassword(pwd);
-};
+  };
   const handleHideAccessKeyModal = () => setShowAccessKeyModal(false);
 
   const handleShowInfoModal = () => {

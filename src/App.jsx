@@ -14,6 +14,8 @@ function App() {
     closeSessionExpiredModal,
     openLoginModal,
     closeLoginModal,
+    openRegisterModal, 
+    closeRegisterModal
   } = useAuthStore();
 
   useEffect(() => {
@@ -30,12 +32,16 @@ function App() {
     console.log("Login exitoso");
   };
 
+  const handleRegister = () => {
+    openRegisterModal();
+  }
+
   return (
       <>
         <HomePage/>
         {showSessionExpiredModal && <SessionExpired label={'Your Session has expired. Please Log again'} onClick={handleButtonClick}/>}
-        {showModalLogin && <LoginModal handleLogin={handleLoginSuccess}/>}
-        {showModalRegister && <RegisterModal />}
+        {showModalLogin && <LoginModal handleLogin={handleLoginSuccess} handleRegister={handleRegister}/>}
+        {showModalRegister && <RegisterModal closeRegister={closeRegisterModal}/>}
       </>
   )
 }

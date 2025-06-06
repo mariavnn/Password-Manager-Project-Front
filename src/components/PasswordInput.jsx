@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { FaCopy } from "react-icons/fa6";
 
@@ -15,27 +15,26 @@ export default function PasswordInput({
   copy = false ,
 }) {
   const [showPassword, setShowPassword] = useState(false);
-  const inputRef = useRef(null);
+  const [copied, setCopied] = useState(false);
+
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const backgroundClass = bgColor === "gray" ? "bg-zinc-700/70" : "bg-white";
-  const textColorClass = bgColor === 'gray' ? 'text-white' : 'text-gray-600';
-
-  const handleCopy = () => {
-    if (inputRef.current) {
-      inputRef.current.select();
-      document.execCommand("copy"); // para compatibilidad
-      navigator.clipboard.writeText(inputRef.current.value)
-        .then(() => {
-          console.log("Texto copiado al portapapeles");
-        })
-        .catch((err) => {
-          console.error("Error al copiar: ", err);
-        });
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(value); 
+      setCopied(true); 
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (err) {
+      console.error("Error al copiar la contraseña:", err);
     }
   };
+
+  const backgroundClass = bgColor === "gray" ? "bg-zinc-700/70" : "bg-white";
+  const textColorClass = bgColor === 'gray' ? 'text-white' : 'text-gray-600';
 
   return (
     <div>
@@ -77,6 +76,9 @@ export default function PasswordInput({
         }
         
       </div>
+      {copied && (
+        <p className="text-gray-400 text-sm mt-1">¡Contraseña copiada con éxito!</p>
+      )}
     </div>
   );
 }

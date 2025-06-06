@@ -7,17 +7,15 @@ import usePasswordStore from "../store/PasswordStore";
 
 
 export default function ContainerInfo({onClick, site, password}) {
-  //const [favorite, setFavorite ] = useState(false);
   const { fetchPasswords } = usePasswordStore();
 
    const handleFavorite = async () => {
     try {
       console.log('Passwords id ', password.id);
-      const result = await markPasswordAsFavorite(password.id);
+      await markPasswordAsFavorite(password.id);
       fetchPasswords();
-      alert(result.message); 
     } catch (err) {
-      alert('No se pudo marcar como favorita ', err);
+      console.log('No se pudo marcar como favorita ', err);
     }
   };
 

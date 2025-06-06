@@ -19,9 +19,7 @@ export default function ConsultPassword({closeModal}) {
 
   const fetchPassword = async () => {
       try {
-        console.log("Petición al backend con:", selectedPassword.siteName);
         const data = await getPassword(selectedPassword.siteName);
-        console.log('DATA DE PASSWORD  ', data);
         if (!data || Object.keys(data).length === 0) {
           console.warn("No se recibió información del backend.");
           setPassword("");

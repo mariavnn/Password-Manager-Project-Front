@@ -5,7 +5,7 @@ export default function PrincipalButton({ onClick, label }) {
     <button
       type="submit"
       onClick={onClick}
-      className="bg-emerald-400 w-full rounded-2xl py-2 text-white font-bold text-xl"
+      className="bg-emerald-400 w-full rounded-2xl py-2 text-white font-bold text-xl cursor-pointer"
     >
       {label}
     </button>
