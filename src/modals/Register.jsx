@@ -1,48 +1,57 @@
-import * as Yup from 'yup';
-import { Formik, Form } from 'formik';
-import Input from '../components/Input'
-import PasswordInput from '../components/PasswordInput'
-import PrincipalButton from '../components/PrincipalButton'
-import { register } from '../api/authApi';
+import * as Yup from "yup";
+import { Formik, Form } from "formik";
+import Input from "../components/Input";
+import PasswordInput from "../components/PasswordInput";
+import PrincipalButton from "../components/PrincipalButton";
+import { register } from "../api/authApi";
 
 export default function RegisterModal({ closeRegister }) {
-    const initialValues = {
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
+  const initialValues = {
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+
+  const validationSchema = Yup.object({
+    username: Yup.string().required("El nombre de usuario es obligatorio"),
+    email: Yup.string()
+      .email("Correo inválido")
+      .required("El correo es obligatorio"),
+    password: Yup.string()
+      .min(8, "Mínimo 8 caracteres")
+      .matches(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        "Debe contener al menos un carácter especial"
+      )
+      .required("La contraseña es obligatoria"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Las contraseñas no coinciden")
+      .required("Confirma tu contraseña"),
+  });
+
+  const prepareData = (data) => {
+    return {
+      username: data.username,
+      email: data.email,
+      password: data.password,
     };
+  };
 
-    const validationSchema = Yup.object({
-        username: Yup.string().required('El nombre de usuario es obligatorio'),
-        email: Yup.string().email('Correo inválido').required('El correo es obligatorio'),
-        password: Yup.string().min(6, 'Mínimo 6 caracteres').required('La contraseña es obligatoria'),
-        confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password'), null], 'Las contraseñas no coinciden')
-        .required('Confirma tu contraseña'),
-    });
-
-    const prepareData = (data) =>{
-      return {
-        username: data.username,
-        email: data.email,
-        password: data.password
-      }
+  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+    try {
+      const data = prepareData(values);
+      await register(data);
+      closeRegister();
+    } catch (error) {
+      console.log('error ', error.response.data);
+      setErrors({ general: error?.response?.data?.error});
+    } finally {
+      setSubmitting(false);
     }
-    
-    const handleSubmit = async (values, { setSubmitting, setErrors }) => {
-        try {
-            const data = prepareData(values);
-            await register(data);
-            closeRegister();
-        } catch (error) {
-            setErrors({ general: error.message });
-        } finally {
-        setSubmitting(false);
-        }
-    };
+  };
 
-    return (
+  return (
     <div className="fixed inset-0 backdrop-blur-sm bg-opacity-80 flex items-center justify-center z-50">
       <div className="w-[30%] h-[85%] border-white bg-zinc-900 border-1 rounded-2xl flex flex-col justify-around items-center px-8 py-3">
         <h2 className="text-white text-3xl font-bold">Create Account</h2>
@@ -112,7 +121,9 @@ export default function RegisterModal({ closeRegister }) {
                   onBlur={handleBlur}
                 />
                 {touched.confirmPassword && errors.confirmPassword && (
-                  <p className="text-red-400 text-sm mt-1">{errors.confirmPassword}</p>
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.confirmPassword}
+                  </p>
                 )}
               </div>
 
@@ -122,7 +133,7 @@ export default function RegisterModal({ closeRegister }) {
 
               <div className="mt-4">
                 <PrincipalButton
-                  label={isSubmitting ? 'Registrando...' : 'Register'}
+                  label={isSubmitting ? "Registrando..." : "Register"}
                   type="submit"
                   disabled={isSubmitting}
                 />
